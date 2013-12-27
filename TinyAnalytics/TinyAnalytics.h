@@ -62,5 +62,13 @@
          quantity:(NSNumber *)quantity
      currencyCode:(NSString *)currencyCode;
 
+/**
+* Track the social interaction.
+*
+* @param network The social network with which the user is interacting (e.g. Facebook, Google+, Twitter, etc.). Required.
+* @param action The social action taken (e.g. Like, Share, +1, etc.). Required.
+* @param The content on which the social action is being taken (i.e. a specific article or video). Can be nil.
+*/
+- (void)trackSocialInteraction:(NSString *)network action:(NSString *)action target:(NSString *)target;
 
 @end

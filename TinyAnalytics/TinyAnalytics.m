@@ -119,5 +119,33 @@ NSString *const gaBaseUrl = @"http://www.google-analytics.com/collect";
     }];
 }
 
+- (void)trackSocialInteraction:(NSString *)network action:(NSString *)action target:(NSString *)target {
+    if (!trackingID) {
+        [NSException raise:@"NoTrackingIDException" format:@"Please set a trackingID"];
+    }
+
+    NSMutableDictionary *mutablePayload = [[NSMutableDictionary alloc] init];
+    [mutablePayload setValue:@1 forKey:@"v"];
+    [mutablePayload setValue:trackingID forKey:@"tid"];
+    [mutablePayload setValue:[[[UIDevice currentDevice] identifierForVendor] UUIDString] forKey:@"cid"];
+    [mutablePayload setValue:@"social" forKey:@"t"];
+    [mutablePayload setValue:action forKey:@"sa"];
+    [mutablePayload setValue:network forKey:@"sn"];
+    if (target) {
+        [mutablePayload setValue:target forKey:@"st"];
+    } else {
+        [mutablePayload setValue:@"/" forKey:@"st"];
+    }
+
+    AFHTTPRequestOperationManager *operationManager = [AFHTTPRequestOperationManager manager];
+    [operationManager setResponseSerializer:[AFHTTPResponseSerializer serializer]];
+    [operationManager POST:gaBaseUrl parameters:mutablePayload
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"Successfully tracked social interaction.");
+       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Failed to track social interaction: %@", error);
+    }];
+}
+
 
 @end
