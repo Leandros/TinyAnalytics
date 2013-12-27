@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name	= 'TinyAnalytics'
-  s.version	= '1.0.0'
+  s.version	= '1.1.0'
   s.license	= 'MIT'
   s.summary	= 'A lightweight library for Google Analytics.'
   s.homepage	= 'https://github.com/Leandros/TinyAnalytics'
