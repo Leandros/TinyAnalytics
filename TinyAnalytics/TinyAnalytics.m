@@ -147,5 +147,54 @@ NSString *const gaBaseUrl = @"http://www.google-analytics.com/collect";
     }];
 }
 
+- (void)trackAppEvent:(NSString *)action category:(NSString *)category {
+    if (!trackingID) {
+        [NSException raise:@"NoTrackingIDException" format:@"Please set a trackingID"];
+    }
+
+    NSMutableDictionary *mutablePayload = [[NSMutableDictionary alloc] init];
+    [mutablePayload setValue:@1 forKey:@"v"];
+    [mutablePayload setValue:trackingID forKey:@"tid"];
+    [mutablePayload setValue:[[[UIDevice currentDevice] identifierForVendor] UUIDString] forKey:@"cid"];
+    [mutablePayload setValue:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"] forKey:@"an"];
+    [mutablePayload setValue:@"event" forKey:@"t"];
+    [mutablePayload setValue:category forKey:@"ec"];
+    [mutablePayload setValue:action forKey:@"ea"];
+
+    AFHTTPRequestOperationManager *operationManager = [AFHTTPRequestOperationManager manager];
+    [operationManager setResponseSerializer:[AFHTTPResponseSerializer serializer]];
+    [operationManager POST:gaBaseUrl parameters:mutablePayload
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"Successfully tracked app event.");
+       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Failed to track app event: %@", error);
+    }];
+}
+
+- (void)trackException:(BOOL)isFatal description:(NSString *)description {
+    if (!trackingID) {
+        [NSException raise:@"NoTrackingIDException" format:@"Please set a trackingID"];
+    }
+
+    NSMutableDictionary *mutablePayload = [[NSMutableDictionary alloc] init];
+    [mutablePayload setValue:@1 forKey:@"v"];
+    [mutablePayload setValue:trackingID forKey:@"tid"];
+    [mutablePayload setValue:[[[UIDevice currentDevice] identifierForVendor] UUIDString] forKey:@"cid"];
+    [mutablePayload setValue:@"exception" forKey:@"t"];
+    if (description) {
+        [mutablePayload setValue:description forKey:@"exd"];
+    }
+    [mutablePayload setValue:isFatal ? @1 : @0 forKey:@"exf"];
+
+    AFHTTPRequestOperationManager *operationManager = [AFHTTPRequestOperationManager manager];
+    [operationManager setResponseSerializer:[AFHTTPResponseSerializer serializer]];
+    [operationManager POST:gaBaseUrl parameters:mutablePayload
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"Successfully tracked exception.");
+       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Failed to track exception: %@", error);
+    }];
+}
+
 
 @end

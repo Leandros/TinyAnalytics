@@ -71,4 +71,19 @@
 */
 - (void)trackSocialInteraction:(NSString *)network action:(NSString *)action target:(NSString *)target;
 
+/**
+* Track an event.
+*
+* @param action The event action. Required.
+* @param category The event category. Required.
+*/
+- (void)trackAppEvent:(NSString *)action category:(NSString *)category;
+
+/**
+* Track an exception.
+*
+* @param isFatal Indicates whether the exception was fatal. YES indicates fatal. Required.
+* @param description A description of the exception (up to 100 characters). Can be nil.
+*/
+- (void)trackException:(BOOL)isFatal description:(NSString *)description;
 @end
