@@ -48,4 +48,76 @@ NSString *const gaBaseUrl = @"http://www.google-analytics.com/collect";
     }];
 }
 
+- (void)trackTransaction:(NSString *)transactionID
+              affliation:(NSString *)affliation
+                 revenue:(NSNumber *)revenue
+                shipping:(NSNumber *)shipping
+                     tax:(NSNumber *)tax
+            currencyCode:(NSString *)currencyCode {
+    if (!trackingID) {
+        [NSException raise:@"NoTrackingIDException" format:@"Please set a trackingID"];
+    }
+
+    NSMutableDictionary *mutablePayload = [[NSMutableDictionary alloc] init];
+    [mutablePayload setValue:@1 forKey:@"v"];
+    [mutablePayload setValue:trackingID forKey:@"tid"];
+    [mutablePayload setValue:[[[UIDevice currentDevice] identifierForVendor] UUIDString] forKey:@"cid"];
+    [mutablePayload setValue:@"transaction" forKey:@"t"];
+    [mutablePayload setValue:transactionID forKey:@"ti"];
+    [mutablePayload setValue:affliation forKey:@"ta"];
+    [mutablePayload setValue:revenue forKey:@"tr"];
+    [mutablePayload setValue:shipping forKey:@"ts"];
+    [mutablePayload setValue:tax forKey:@"tt"];
+    if (currencyCode) {
+        [mutablePayload setValue:currencyCode forKey:@"cu"];
+    }
+
+    AFHTTPRequestOperationManager *operationManager = [AFHTTPRequestOperationManager manager];
+    [operationManager setResponseSerializer:[AFHTTPResponseSerializer serializer]];
+    [operationManager POST:gaBaseUrl parameters:mutablePayload
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"Successfully tracked transaction.");
+       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Failed to track Screen: %@", error);
+    }];
+}
+
+- (void)trackItem:(NSString *)transactionID
+             name:(NSString *)name
+              SKU:(NSString *)SKU
+        cateogory:(NSString *)category
+            price:(NSNumber *)price
+         quantity:(NSNumber *)quantity
+     currencyCode:(NSString *)currencyCode {
+    if (!trackingID) {
+        [NSException raise:@"NoTrackingIDException" format:@"Please set a trackingID"];
+    }
+
+    NSMutableDictionary *mutablePayload = [[NSMutableDictionary alloc] init];
+    [mutablePayload setValue:@1 forKey:@"v"];
+    [mutablePayload setValue:trackingID forKey:@"tid"];
+    [mutablePayload setValue:[[[UIDevice currentDevice] identifierForVendor] UUIDString] forKey:@"cid"];
+    [mutablePayload setValue:@"item" forKey:@"t"];
+    [mutablePayload setValue:transactionID forKey:@"ti"];
+    [mutablePayload setValue:name forKey:@"in"];
+    [mutablePayload setValue:price forKey:@"ip"];
+    [mutablePayload setValue:quantity forKey:@"iq"];
+    [mutablePayload setValue:SKU forKey:@"ic"];
+    [mutablePayload setValue:category forKey:@"iv"];
+    if (currencyCode) {
+        [mutablePayload setValue:currencyCode forKey:@"cu"];
+    }
+
+
+    AFHTTPRequestOperationManager *operationManager = [AFHTTPRequestOperationManager manager];
+    [operationManager setResponseSerializer:[AFHTTPResponseSerializer serializer]];
+    [operationManager POST:gaBaseUrl parameters:mutablePayload
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"Successfully tracked product.");
+       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Failed to track Screen: %@", error);
+    }];
+}
+
+
 @end
