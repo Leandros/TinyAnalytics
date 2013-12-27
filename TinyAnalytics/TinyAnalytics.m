@@ -4,10 +4,19 @@
 NSString *const gaBaseUrl = @"http://www.google-analytics.com/collect";
 
 @implementation TinyAnalytics {
-
+    AFHTTPRequestOperationManager *operationManager;
 }
 
 @synthesize trackingID;
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        operationManager = [AFHTTPRequestOperationManager manager];
+    }
+
+    return self;
+}
 
 + (id)sharedInstance {
     static TinyAnalytics *sharedInstance = nil;
@@ -38,7 +47,6 @@ NSString *const gaBaseUrl = @"http://www.google-analytics.com/collect";
     [mutablePayload setValue:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"] forKey:@"av"];
     [mutablePayload setValue:tag forKey:@"cd"];
 
-    AFHTTPRequestOperationManager *operationManager = [AFHTTPRequestOperationManager manager];
     [operationManager setResponseSerializer:[AFHTTPResponseSerializer serializer]];
     [operationManager POST:gaBaseUrl parameters:mutablePayload
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -72,7 +80,6 @@ NSString *const gaBaseUrl = @"http://www.google-analytics.com/collect";
         [mutablePayload setValue:currencyCode forKey:@"cu"];
     }
 
-    AFHTTPRequestOperationManager *operationManager = [AFHTTPRequestOperationManager manager];
     [operationManager setResponseSerializer:[AFHTTPResponseSerializer serializer]];
     [operationManager POST:gaBaseUrl parameters:mutablePayload
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -108,8 +115,6 @@ NSString *const gaBaseUrl = @"http://www.google-analytics.com/collect";
         [mutablePayload setValue:currencyCode forKey:@"cu"];
     }
 
-
-    AFHTTPRequestOperationManager *operationManager = [AFHTTPRequestOperationManager manager];
     [operationManager setResponseSerializer:[AFHTTPResponseSerializer serializer]];
     [operationManager POST:gaBaseUrl parameters:mutablePayload
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -137,7 +142,6 @@ NSString *const gaBaseUrl = @"http://www.google-analytics.com/collect";
         [mutablePayload setValue:@"/" forKey:@"st"];
     }
 
-    AFHTTPRequestOperationManager *operationManager = [AFHTTPRequestOperationManager manager];
     [operationManager setResponseSerializer:[AFHTTPResponseSerializer serializer]];
     [operationManager POST:gaBaseUrl parameters:mutablePayload
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -161,7 +165,6 @@ NSString *const gaBaseUrl = @"http://www.google-analytics.com/collect";
     [mutablePayload setValue:category forKey:@"ec"];
     [mutablePayload setValue:action forKey:@"ea"];
 
-    AFHTTPRequestOperationManager *operationManager = [AFHTTPRequestOperationManager manager];
     [operationManager setResponseSerializer:[AFHTTPResponseSerializer serializer]];
     [operationManager POST:gaBaseUrl parameters:mutablePayload
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -186,7 +189,6 @@ NSString *const gaBaseUrl = @"http://www.google-analytics.com/collect";
     }
     [mutablePayload setValue:isFatal ? @1 : @0 forKey:@"exf"];
 
-    AFHTTPRequestOperationManager *operationManager = [AFHTTPRequestOperationManager manager];
     [operationManager setResponseSerializer:[AFHTTPResponseSerializer serializer]];
     [operationManager POST:gaBaseUrl parameters:mutablePayload
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
