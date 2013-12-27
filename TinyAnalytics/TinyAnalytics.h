@@ -1,18 +1,29 @@
-//
-// Created by Arvid Gerstmann on 27/12/13.
-// Copyright (c) 2013 Arvid Gerstmann. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 
 @interface TinyAnalytics : NSObject
 
-@property (nonatomic, strong) NSString *trackingID;
+@property(nonatomic, strong) NSString *trackingID;
 
+/**
+* Returns singleton.
+*
+* @return The TinyAnalytics singleton.
+*/
 + (id)sharedInstance;
 
+/**
+* Init the TinyAnalytics singleton with the trackingID from Google Analytics.
+*
+* @param tracking The TrackingID from your Google Analytics Property.
+* @return the TinyAnalytics singleton.
+*/
 - (id)analyticsWithTrackingID:(NSString *)tracking;
 
-- (void)trackPageView:(NSString *)tag;
+/**
+* Track the current screen.
+*
+* @param tag The name of the screen.
+*/
+- (void)trackScreenView:(NSString *)tag;
 
 @end

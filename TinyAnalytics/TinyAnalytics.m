@@ -1,8 +1,3 @@
-//
-// Created by Arvid Gerstmann on 27/12/13.
-// Copyright (c) 2013 Arvid Gerstmann. All rights reserved.
-//
-
 #import "TinyAnalytics.h"
 #import <AFNetworking/AFNetworking.h>
 
@@ -29,7 +24,7 @@ NSString *const gaBaseUrl = @"http://www.google-analytics.com/collect";
     return self;
 }
 
-- (void)trackPageView:(NSString *)tag {
+- (void)trackScreenView:(NSString *)tag {
     if (!trackingID) {
         [NSException raise:@"NoTrackingIDException" format:@"Please set a trackingID"];
     }
