@@ -42,9 +42,9 @@ NSString *const gaBaseUrl = @"http://www.google-analytics.com/collect";
     [operationManager setResponseSerializer:[AFHTTPResponseSerializer serializer]];
     [operationManager POST:gaBaseUrl parameters:mutablePayload
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"Successfully tracked Screen %@", tag);
+            NSLog(@"Successfully tracked screen %@", tag);
        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"Failed to track Screen: %@", error);
+            NSLog(@"Failed to track screen: %@", error);
     }];
 }
 
@@ -78,7 +78,7 @@ NSString *const gaBaseUrl = @"http://www.google-analytics.com/collect";
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"Successfully tracked transaction.");
        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"Failed to track Screen: %@", error);
+            NSLog(@"Failed to track transaction: %@", error);
     }];
 }
 
@@ -115,7 +115,7 @@ NSString *const gaBaseUrl = @"http://www.google-analytics.com/collect";
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"Successfully tracked product.");
        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"Failed to track Screen: %@", error);
+            NSLog(@"Failed to track product: %@", error);
     }];
 }
 
